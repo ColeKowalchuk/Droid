@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvf2c5kjsu76m"]
+
+[ext_resource type="Script" path="res://terrain_detector.gd" id="1_30red"]
+
+[node name="TerrainDetector" type="Area2D"]
+collision_mask = 2147483648
+script = ExtResource("1_30red")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="body_shape_exited" from="." to="." method="_on_body_shape_exited"]

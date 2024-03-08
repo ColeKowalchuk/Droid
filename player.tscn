@@ -1,0 +1,306 @@
+[gd_scene load_steps=26 format=3 uid="uid://c3tfsup3svmrd"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_7vmqj"]
+[ext_resource type="Texture2D" uid="uid://c8ihstr4ashgy" path="res://Art Assets/Player/CodenameDroidSpriteSheet_Player.png" id="2_uq1of"]
+[ext_resource type="PackedScene" uid="uid://c0fg03anqx3kc" path="res://health_component.tscn" id="3_3epg2"]
+[ext_resource type="PackedScene" uid="uid://bn4retuowylwm" path="res://hitbox_component.tscn" id="4_7tr7l"]
+[ext_resource type="Texture2D" uid="uid://bo12ljcs0xt5s" path="res://Art Assets/Effects/WaterDrop.png" id="6_0ievc"]
+[ext_resource type="PackedScene" uid="uid://dp2x73v1ylkyp" path="res://plasma_pistol.tscn" id="6_48ugw"]
+[ext_resource type="Texture2D" uid="uid://bnn15mmx2v4e6" path="res://Art Assets/Effects/GooTracks.png" id="6_glssw"]
+[ext_resource type="PackedScene" uid="uid://dvf2c5kjsu76m" path="res://terrain_detector.tscn" id="6_io1kw"]
+[ext_resource type="Texture2D" uid="uid://dvtv7wif84gpe" path="res://Art Assets/Effects/VisorLight.png" id="8_jlwm7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xjagt"]
+size = Vector2(16, 16)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ql3io"]
+emission_shape = 3
+emission_box_extents = Vector3(8, 2, 1)
+particle_flag_disable_z = true
+direction = Vector3(0, -4, 0)
+spread = 0.0
+gravity = Vector3(0, 98, 0)
+initial_velocity_min = 43.48
+initial_velocity_max = 43.48
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color = Color(0.301961, 0.733333, 1, 0.643137)
+hue_variation_min = -0.07
+hue_variation_max = 0.01
+
+[sub_resource type="Gradient" id="Gradient_ygw7f"]
+colors = PackedColorArray(1, 1, 1, 0.72549, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_yfgfq"]
+gradient = SubResource("Gradient_ygw7f")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0jrdv"]
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+color_ramp = SubResource("GradientTexture1D_yfgfq")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_v8h4y"]
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = 90.0
+angle_max = 90.0
+color_ramp = SubResource("GradientTexture1D_yfgfq")
+
+[sub_resource type="Animation" id="Animation_i4gpr"]
+resource_name = "Coast_Down"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [12, 13, 12]
+}
+
+[sub_resource type="Animation" id="Animation_o32g4"]
+resource_name = "Coast_Left"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [2, 3, 2]
+}
+
+[sub_resource type="Animation" id="Animation_cynno"]
+resource_name = "Coast_Right"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+
+[sub_resource type="Animation" id="Animation_pklus"]
+resource_name = "Coast_Up"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [8, 9, 8]
+}
+
+[sub_resource type="Animation" id="Animation_0l0u6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_de3yi"]
+resource_name = "Sprint_Down"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [14, 15, 14]
+}
+
+[sub_resource type="Animation" id="Animation_l8icn"]
+resource_name = "Sprint_Left"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [6, 7, 6]
+}
+
+[sub_resource type="Animation" id="Animation_ptc1s"]
+resource_name = "Sprint_Right"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [4, 5, 4]
+}
+
+[sub_resource type="Animation" id="Animation_08cun"]
+resource_name = "Sprint_Up"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [10, 11, 10]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t4i0b"]
+_data = {
+"Coast_Down": SubResource("Animation_i4gpr"),
+"Coast_Left": SubResource("Animation_o32g4"),
+"Coast_Right": SubResource("Animation_cynno"),
+"Coast_Up": SubResource("Animation_pklus"),
+"RESET": SubResource("Animation_0l0u6"),
+"Sprint_Down": SubResource("Animation_de3yi"),
+"Sprint_Left": SubResource("Animation_l8icn"),
+"Sprint_Right": SubResource("Animation_ptc1s"),
+"Sprint_Up": SubResource("Animation_08cun")
+}
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 3
+texture_filter = 1
+motion_mode = 1
+script = ExtResource("1_7vmqj")
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_3epg2")]
+MAX_HEALTH = 10.0
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_component") instance=ExtResource("4_7tr7l")]
+health_component = NodePath("../HealthComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("RectangleShape2D_xjagt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_xjagt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("2_uq1of")
+hframes = 4
+vframes = 4
+
+[node name="VisorLight" type="PointLight2D" parent="."]
+rotation = 1.5708
+color = Color(0.415686, 0.666667, 0.160784, 1)
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 1.0
+texture = ExtResource("8_jlwm7")
+offset = Vector2(-5, -24)
+
+[node name="Weapons" type="Node2D" parent="."]
+z_index = 1
+
+[node name="RightHand" type="Node2D" parent="Weapons"]
+
+[node name="PlasmaPistol" parent="Weapons/RightHand" instance=ExtResource("6_48ugw")]
+
+[node name="LeftHand" type="Node2D" parent="Weapons"]
+
+[node name="PlasmaPistol" parent="Weapons/LeftHand" instance=ExtResource("6_48ugw")]
+
+[node name="RightShoulder" type="Node2D" parent="Weapons"]
+
+[node name="LeftShoulder" type="Node2D" parent="Weapons"]
+
+[node name="Particles" type="Node2D" parent="."]
+
+[node name="WaterSplash" type="GPUParticles2D" parent="Particles"]
+texture_filter = 1
+position = Vector2(0, 3)
+emitting = false
+amount = 24
+process_material = SubResource("ParticleProcessMaterial_ql3io")
+texture = ExtResource("6_0ievc")
+
+[node name="GooTracksV" type="GPUParticles2D" parent="Particles"]
+emitting = false
+amount = 80
+process_material = SubResource("ParticleProcessMaterial_0jrdv")
+texture = ExtResource("6_glssw")
+lifetime = 4.0
+
+[node name="GooTracksH" type="GPUParticles2D" parent="Particles"]
+emitting = false
+amount = 80
+process_material = SubResource("ParticleProcessMaterial_v8h4y")
+texture = ExtResource("6_glssw")
+lifetime = 4.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+position_smoothing_speed = 3.0
+
+[node name="ColorRect" type="CanvasModulate" parent="Camera2D"]
+color = Color(0.756863, 0.756863, 0.756863, 1)
+
+[node name="TerrainDetector" parent="." instance=ExtResource("6_io1kw")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TerrainDetector"]
+shape = SubResource("RectangleShape2D_xjagt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_t4i0b")
+}

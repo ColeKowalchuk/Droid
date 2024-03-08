@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://fgoc7nbcfh3q"]
+
+[ext_resource type="Script" path="res://world.gd" id="1_ka13t"]
+[ext_resource type="PackedScene" uid="uid://cufmirdcif8sh" path="res://area_1.tscn" id="1_yn4iq"]
+[ext_resource type="PackedScene" uid="uid://c3tfsup3svmrd" path="res://player.tscn" id="2_2pfad"]
+[ext_resource type="PackedScene" uid="uid://bmh27j67slskf" path="res://ui.tscn" id="3_e65b1"]
+
+[sub_resource type="Environment" id="Environment_ou0po"]
+background_mode = 3
+tonemap_mode = 3
+glow_enabled = true
+glow_levels/1 = 8.0
+glow_levels/3 = 0.0
+glow_levels/5 = 0.0
+glow_bloom = 0.01
+glow_blend_mode = 0
+glow_hdr_threshold = 0.9
+glow_hdr_luminance_cap = 256.0
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_ka13t")
+
+[node name="Player" parent="." node_paths=PackedStringArray("TILEMAP") instance=ExtResource("2_2pfad")]
+z_index = 1
+position = Vector2(228, 193)
+TILEMAP = NodePath("../AreaID1_")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ou0po")
+
+[node name="UI" parent="." instance=ExtResource("3_e65b1")]
+
+[node name="AreaID1_" parent="." instance=ExtResource("1_yn4iq")]

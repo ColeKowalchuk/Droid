@@ -1,0 +1,103 @@
+[gd_scene load_steps=13 format=3 uid="uid://deja8wa1ka0ea"]
+
+[ext_resource type="Texture2D" uid="uid://bs7qxpk7bct2h" path="res://Art Assets/Effects/LaserShotSheet.png" id="1_cytj2"]
+[ext_resource type="Script" path="res://laser_shot.gd" id="1_owga0"]
+[ext_resource type="PackedScene" uid="uid://bn4retuowylwm" path="res://hitbox_component.tscn" id="2_6k40o"]
+[ext_resource type="PackedScene" uid="uid://w1yhb28prngj" path="res://damage_component.tscn" id="3_xorle"]
+[ext_resource type="Texture2D" uid="uid://bo12ljcs0xt5s" path="res://Art Assets/Effects/WaterDrop.png" id="5_grjw3"]
+
+[sub_resource type="Animation" id="Animation_4s1io"]
+length = 0.2
+
+[sub_resource type="Animation" id="Animation_1cuy1"]
+resource_name = "Shoot"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4neqk"]
+_data = {
+"RESET": SubResource("Animation_4s1io"),
+"Shoot": SubResource("Animation_1cuy1")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u6wlh"]
+size = Vector2(2, 8)
+
+[sub_resource type="Gradient" id="Gradient_qm7sl"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bqii4"]
+gradient = SubResource("Gradient_qm7sl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t1f2h"]
+particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+spread = 20.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 8.0
+initial_velocity_max = 20.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+damping_min = 6.0
+damping_max = 10.0
+color_ramp = SubResource("GradientTexture1D_bqii4")
+hue_variation_min = -0.28
+hue_variation_max = 0.05
+
+[node name="LaserShot" type="Area2D"]
+top_level = true
+z_index = 100
+texture_filter = 1
+script = ExtResource("1_owga0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1.2, 1.5, 1)
+texture = ExtResource("1_cytj2")
+hframes = 2
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Shoot"
+libraries = {
+"": SubResource("AnimationLibrary_4neqk")
+}
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("damage_component") instance=ExtResource("2_6k40o")]
+collision_layer = 0
+collision_mask = 524288
+damage_component = NodePath("../DamageComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("RectangleShape2D_u6wlh")
+
+[node name="DamageComponent" parent="." instance=ExtResource("3_xorle")]
+
+[node name="HitEffect" type="GPUParticles2D" parent="."]
+self_modulate = Color(0, 79.2, 100, 1)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_t1f2h")
+texture = ExtResource("5_grjw3")
+lifetime = 1.6
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.6
+one_shot = true
+
+[connection signal="body_entered" from="HitboxComponent" to="HitboxComponent" method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
